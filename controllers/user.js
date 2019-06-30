@@ -47,6 +47,7 @@ router.post('/login', urlencodedParser, (req, res) => {
                 }
             })
             break;
+            
         case 'login':
             User.findOne({ email: req.body.email, password: req.body.password }, function (err, doc) {
                 if (err) {

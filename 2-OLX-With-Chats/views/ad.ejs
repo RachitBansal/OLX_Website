@@ -9,17 +9,17 @@
 
 <% for(var i=0; i < messages.length; i++){ %>
 <h4>
-    <% if(messages[i].from == 'user') { %>
+    <% if(messages[i].from == 'buyer') { %>
     You:
     <% }else{ %>
-    Owner
+    Owner:
     <% } %>
     <%=messages[i].message %>
 </h4>
 <% } %>
 
 <form method="post">
-    <input name="message" />
+    <input name="msg" />
     <button type="submit">send</button>
 </form>
 

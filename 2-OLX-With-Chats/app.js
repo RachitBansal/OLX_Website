@@ -3,7 +3,7 @@ var app = express()
 app.set("view engine", "ejs")
 
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/newdb', { useNewUrlParser: true });
+mongoose.connect('mongodb://localhost:27017/OLX', { useNewUrlParser: true });
 const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
 
@@ -25,9 +25,10 @@ const adModel = mongoose.model("Ad", adScehma)
 
 const messageSchema = new Schema({
     message: String,
+    buyerId: ObjectId,
+    from: String,
     adId: ObjectId,
-    userId: ObjectId,
-    from: String
+    sellerId: ObjectId,
 });
 
 const messageModel = mongoose.model("Message", messageSchema)
@@ -59,10 +60,11 @@ app.get('/ad/:id', async (req, res) => {
     let ad = await adModel.findById(req.params.id)
 
     let messages = []
+
     if (req.session.user) {
         messages = await messageModel.find({
             adId: req.params.id,
-            userId: req.session.user._id
+            buyerId: req.session.user._id
         })
     }
 
@@ -72,14 +74,18 @@ app.get('/ad/:id', async (req, res) => {
 app.post('/ad/:id', urlencodedParser, checkLogIn, (req, res) => {
     let newMessage = new messageModel()
 
-    newMessage.message = req.body.message
-    newMessage.userId = req.session.user._id
-    newMessage.from = "user"
+    newMessage.message = req.body.msg
+    newMessage.buyerId = req.session.user._id
     newMessage.adId = req.params.id
+    newMessage.from = 'buyer'
 
-    newMessage.save(function (err) {
-        res.redirect(`/ad/${req.params.id}`)
+    adModel.findOne({_id:req.params.id},(err,doc)=>{
+        newMessage.sellerId = doc.postedBy
+        newMessage.save((err) => {
+            res.redirect("/ad/" + req.param.id)
+        })
     })
+
 })
 
 //User Routes
@@ -150,20 +156,24 @@ app.post('/user/dashboard', urlencodedParser, checkLogIn, (req, res) => {
 
 app.get('/user/ad/:id/chats', checkLogIn, async (req, res) => {
     let messages = await messageModel.find({ adId: req.params.id })
-    messages = _.groupBy(messages, 'userId')
+    messages = _.groupBy(messages, 'buyerId')
     messages = _.map(messages, (value) => { return value })
-    res.render('ownerchats', { user: req.session.user, messages: messages })
+    res.render('ownerchats', { user: req.session.user, messages: messages})
 })
+
 app.post('/user/ad/:id/chats', urlencodedParser, checkLogIn, (req, res) => {
     let newMessage = new messageModel()
 
-    newMessage.message = req.body.message
-    newMessage.userId = req.body.userid
+    newMessage.message = req.body.msg
+    newMessage.buyerId = req.body.buyerId
     newMessage.adId = req.params.id
+    newMessage.from = 'seller'
 
-    newMessage.save(function (err) {
-        console.log(err)
-        res.redirect(`/user/ad/${req.params.id}/chats`)
+    adModel.findOne({_id:req.params.id},(err,doc)=>{
+        newMessage.sellerId = doc.postedBy
+        newMessage.save((err) => {
+            res.redirect("/user/ad/" + req.param.id)
+        })
     })
 })
 

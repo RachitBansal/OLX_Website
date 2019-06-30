@@ -2,7 +2,7 @@
 
 <% for(var j=0; j < messages[i].length; j++){ %>
 <h4>
-    <% if(messages[i][j].from == 'user') { %>
+    <% if(messages[i][j].from == 'buyer') { %>
     User:
     <% }else{ %>
     You:
@@ -11,8 +11,8 @@
 </h4>
 <% } %>
 <form method="post">
-    <input type="hidden" name="userid" value="<%=messages[i][0].userId %>" />
-    <input name="message" />
+    <input type="hidden" name="buyerid" value="<%=messages[i][0].buyerId %>" />
+    <input name="msg" />
     <button type="submit">send</button>
 </form>
 <% } %>
