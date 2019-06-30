@@ -1,24 +1,30 @@
 <html>
     <head>
         <title>Login/Signup</title>
+        <style>
+            .button{
+                height:10px;
+                width:30px
+            }
+        </style>
     </head>
-    <body>
+    <body style='display: flex'>
         <div>
             <h1>Login</h1>
             <form>
                 <input type='email' placeholder='Enter Email ID' name='email' />
                 <input type='password' placeholder="Enter Password" name='pass' />
                 <br />
-                <button type='submit' name='action' value='login' />
+                <button class='button' type='submit' name='action' value='login'>Login</button>
             </form>
         </div>
-        <div>
+        <div style='margin-left: 50px'>
             <h1>Register</h1>
             <form>
                 <input type='email' placeholder='Enter Email ID' name='email' />
                 <input type='password' placeholder="Enter Password" name='pass' />
                 <br />
-                <button type='submit' name='action' value='signup' />
+                <button class='button' type='submit' name='action' value='signup'>Regsiter</button>
                 </form>
         </div>
     </body>

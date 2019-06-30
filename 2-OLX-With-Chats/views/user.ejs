@@ -1,0 +1,30 @@
+<h1>Post a free Ad</h1>
+
+<form method="post">
+    <input name="name" placeholder="Name" required />
+    <br /><br />
+    <button type="submit">
+        Submit
+    </button>
+</form>
+
+
+<h1>Your Ads</h1>
+<table>
+    <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th></th>
+    </tr>
+    <% for(var i = 0; i < ads.length; i++) { %>
+    <tr>
+        <td><%=i+1 %></td>
+        <td><%=ads[i].name %></td>
+        <td>
+            <a href="/user/ad/<%=ads[i].id %>/chats">
+                show chats
+            </a>
+        </td>
+    </tr>
+    <% } %>
+</table>

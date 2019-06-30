@@ -1,20 +1,28 @@
 <html>
-    <head>
-        <title>Welcome to OLX</title>
-    </head>
+
     <body>
-        <a href='/user/login'>Login/Signup</a>
-        <br /><br />
-        <h1>OLX</h1>
-        <br />
-        <h4>The go-to place to Buy and Sell Products</h4>
-        <br /><br /><br />
+        <%- include('header') %>
+
+        <h1 class="he">Welcome to OLX</h1>
+
         <table>
             <tr>
-                <th>S.No</th>
-                <th>Product Name</th>
+                <th>#</th>
+                <th>Name</th>
+                <th></th>
             </tr>
-
+            <tr>
+                <% for(var i = 0; i < ads.length; i++) { %>
+                <td><%=i+1 %></td>
+                <td><%=ads[i].name %></td>
+                <td>
+                    <a href="/ad/<%=ads[i].id %>">
+                        show
+                    </a>
+                </td>
+                <% } %>
+            </tr>
         </table>
     </body>
+
 </html>

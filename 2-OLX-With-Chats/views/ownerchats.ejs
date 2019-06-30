@@ -1,0 +1,18 @@
+<% for(var i=0; i < messages.length; i++){ %>
+
+<% for(var j=0; j < messages[i].length; j++){ %>
+<h4>
+    <% if(messages[i][j].from == 'user') { %>
+    User:
+    <% }else{ %>
+    You:
+    <% } %>
+    <%=messages[i][j].message %>
+</h4>
+<% } %>
+<form method="post">
+    <input type="hidden" name="userid" value="<%=messages[i][0].userId %>" />
+    <input name="message" />
+    <button type="submit">send</button>
+</form>
+<% } %>
