@@ -40,13 +40,14 @@ const userScehma = new Schema({
 
 const userModel = mongoose.model("User", userScehma)
 
-
+// Loading the home page, passing all the ads so as to display them.
 app.get('/', (req, res) => {
     adModel.find({}, (err, docs) => {
         res.render('index', { user: req.session.user, ads: docs })
     })
 })
 
+// Creating middleware
 const checkLogIn = (req, res, next) => {
     if (req.session.user) {
         next();
@@ -55,7 +56,9 @@ const checkLogIn = (req, res, next) => {
     }
 }
 
-//Ad Routes
+//Ad Routes + Message Route #1
+// We are using 'req.params.id' because the router in here is of this form
+// Had the url been '/add?=id' we would've written 'req.query.id'
 app.get('/ad/:id', async (req, res) => {
     let ad = await adModel.findById(req.params.id)
 
@@ -71,6 +74,7 @@ app.get('/ad/:id', async (req, res) => {
     res.render("ad", { user: req.session.user, messages: messages, ad: ad })
 })
 
+// ':' before 'id' represents a dynamic variable
 app.post('/ad/:id', urlencodedParser, checkLogIn, (req, res) => {
     let newMessage = new messageModel()
 
